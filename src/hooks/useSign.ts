@@ -12,8 +12,8 @@ export default function useSign() {
   })
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
-  const rawMessage = Math.random().toString(36).slice(-8)
   const { handleError } = useCatchTxError()
+  const rawMessage = Math.random().toString(36).slice(-8)
   const { isLoading, signMessageAsync } = useSignMessage({
     message: rawMessage,
     onSuccess: (result) => {
@@ -53,6 +53,8 @@ export default function useSign() {
     }
     return true
   }, [connect, handleError, isConnected, signMessageAsync])
+
+
   return {
     signLoading: isLoading,
     sign,

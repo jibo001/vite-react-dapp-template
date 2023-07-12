@@ -9,5 +9,20 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-  }
+  },
+  //启动服务配置
+  server: {
+    host: '0.0.0.0',
+    port: 8000,
+    open: true,
+    https: false,
+    proxy: {
+      '/api': {
+        target: 'http://185.216.119.250:8848/',
+        ws: true,
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
 })

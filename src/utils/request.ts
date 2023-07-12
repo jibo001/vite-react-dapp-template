@@ -1,5 +1,5 @@
 import axios, { AxiosHeaders, AxiosRequestHeaders } from 'axios'
-import { ApiResponse } from 'types/request';
+import { ApiResponse } from '@/types/request';
 import { toLower } from 'lodash';
 import { env } from '@/config/env';
 import { Toast } from 'antd-mobile';

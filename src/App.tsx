@@ -1,5 +1,4 @@
 import { Address, WagmiConfig, useContractRead, useWalletClient } from 'wagmi'
-import './App.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import { useTranslation } from 'react-i18next'
 import { getErc20Contract, getIdoStakeContract } from '@/utils/contractHelpers'
