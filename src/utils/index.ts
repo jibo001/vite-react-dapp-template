@@ -4,7 +4,7 @@ import { bsc } from "viem/chains"
 
 // add gas 10%
 export function calculateGasMargin(value: bigint, margin: bigint): bigint {
-  return (value * (10000n + margin)) / 10000000n
+  return (value * (10000n + margin)) / 10000n
 }
 
 /**
