@@ -6,14 +6,14 @@ import { useCallWithGasPrice } from '@/hooks/useCallWithGasPrice'
 import useSign from '@/hooks/useSign'
 import { useActiveChain } from '@/hooks/useActiveChain'
 import useCatchTxError from '@/hooks/useCatchTxError'
-import { MaxUint256 } from 'ethers'
-import BigNumber from 'bignumber.js'
+import { MaxUint256, parseUnits } from 'ethers'
 import { Button } from 'antd-mobile'
 import { env } from '@/config/env'
 import { useLocal } from '@/hooks/useLocal'
 import i18n from '@/locales/config'
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
+import { toWei } from '@/utils/formatBalance'
 
 const Home = memo(() => {
   const { data: walletClient } = useWalletClient()
@@ -22,7 +22,7 @@ const Home = memo(() => {
   const idoStakeContract = getIdoStakeContract(walletClient!)
   const ido = useContractRead({
     ...idoStakeContract,
-    functionName: 'SBTC',
+    functionName: 'BTD',
   })
 
   const queryUserInfo = useQueryUserInfo()
@@ -42,7 +42,7 @@ const Home = memo(() => {
 
     const handleDeposit = async () => {
       await fetchWithCatchTxError(() => {
-        return callWithGasPrice(idoStakeContract!, 'deposit', [1, new BigNumber(1000), false])
+        return callWithGasPrice(idoStakeContract!, 'deposit', [1, toWei('2', 18), false])
       })
     }
 

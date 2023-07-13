@@ -41,9 +41,13 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   }
 
   const handleError = (error: any) => {
+
     if (!localStorage.getItem('wagmi.connected')) return Toast.show('Please connect wallet first')
-    error = parseError(error)
-    Toast.show(error.cause.reason || error.shortMessage)
+    try {
+      error = parseError(error)
+    } finally {
+      Toast.show(error.cause.reason || error.shortMessage)
+    }
   }
 
   const handleTxError = useCallback((error: any, hash: Address) => {

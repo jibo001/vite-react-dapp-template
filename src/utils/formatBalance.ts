@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { formatUnits } from 'viem'
+import { formatUnits, parseUnits } from 'viem'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 /**
@@ -56,4 +56,18 @@ export const formatLpBalance = (balance: BigNumber, decimals: number) => {
     return '< 0.00001'
   }
   return stakedBalanceBigNumber.toFixed(5, BigNumber.ROUND_DOWN)
+}
+
+/**
+ * @description 转换单位 1 -> 1e18
+ */
+export const toWei = (value: string | number, decimals = 18) => {
+  return parseUnits(value.toString(), decimals)
+}
+
+/**
+ * @description 转换单位 1e18 -> 1
+ */
+export const fromWei = (value: bigint, decimals = 18) => {
+  return formatUnits(value, decimals)
 }
