@@ -1,12 +1,10 @@
 import { ReactNode, useEffect } from 'react'
 import { useAccount, useSwitchNetwork, useWalletClient } from 'wagmi'
-// import styles from 'styles/AppWrapper.module.css'
 import { env } from '@/config/env'
 import { useActiveChain } from '@/hooks/useActiveChain'
 import { CustomConnectButton } from '@/components/CustomConnectButton/CustomConnectButton'
 import { useLocal } from '@/hooks/useLocal'
 import useSign from '@/hooks/useSign'
-import ReactQueryWrapper from './ReactQueryWrapper'
 
 export const AppWrapper = ({ children }: { children: ReactNode }) => {
   const { switchNetwork } = useSwitchNetwork({
@@ -20,7 +18,7 @@ export const AppWrapper = ({ children }: { children: ReactNode }) => {
   useLocal()
   // 切换网络
   useEffect(() => {
-    if (activeChainId !== env.chainId && activeChainId !== 0) {
+    if (activeChainId !== env.chainId && activeChainId !== 0 && activeChainId !== undefined) {
       removeSign()
       switchNetwork?.(env.chainId)
     }
@@ -33,7 +31,7 @@ export const AppWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <CustomConnectButton />
-      <ReactQueryWrapper>{children}</ReactQueryWrapper>
+      {children}
     </div>
   )
 }

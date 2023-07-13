@@ -16,9 +16,10 @@ const request = <T>(
 ): Promise<ApiResponse<T>> => {
   const headers: AxiosRequestHeaders = new AxiosHeaders()
   headers['Content-type'] = headerContentType
-  headers.address = toLower(localStorage.getItem('address') || '')
-  headers.message = localStorage.getItem('message') || ''
-  headers.signature = localStorage.getItem('signature') || ''
+  const sign = JSON.parse(localStorage.getItem('sign') || '{}')
+  headers.address = toLower(sign?.address || '')
+  headers.message = sign?.message || ''
+  headers.signature = sign?.signature || ''
   if (needToken) {
     if (!headers.signature) {
       return new Promise((resolve) => {
@@ -34,7 +35,7 @@ const request = <T>(
   }
 
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     axios({
       method,
       headers,
@@ -49,15 +50,7 @@ const request = <T>(
         if (res.data.code === 1) {
           res.data.success = true
           resolve(res.data)
-        } else if (+res.data.code === -1) { // token失效
-          resolve({
-            code: -1,
-            success: false,
-            data: null,
-            msg: 'Token inValid',
-          })
         } else {
-          // Toast.fail(res.data.msg)
           resolve({
             code: res.data.code,
             success: false,

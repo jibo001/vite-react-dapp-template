@@ -19,8 +19,8 @@ const connectors = connectorsForWallets([
   {
     groupName: 'Recommended',
     wallets: [
-      metaMaskWallet({ chains, projectId: env.projectId }),
       injectedWallet({ chains }),
+      metaMaskWallet({ chains, projectId: env.projectId }),
       walletConnectWallet({ projectId: env.projectId, chains }),
       trustWallet({ chains, projectId: env.projectId })
     ],
@@ -31,5 +31,5 @@ export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  // webSocketPublicClient
+  webSocketPublicClient
 })

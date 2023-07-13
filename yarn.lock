@@ -413,7 +413,7 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.3.1.tgz#4d795b649cc3b1cbb760d191c80dcb4353c9a366"
   integrity sha512-Bu+AMaXNjrpjh41znzHqaz3r2Nr8hHuHZT6V2LBKMhyMl0FgKA62PNYbqnfgmzOhoWZj70Zecisbo4H1rotP5g==
 
-"@floating-ui/dom@^1.2.6":
+"@floating-ui/dom@^1.4.2":
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.4.4.tgz#cf859dde33995a4e7b6ded16c98cb73b2ebfffd0"
   integrity sha512-21hhDEPOiWkGp0Ys4Wi6Neriah7HweToKra626CIK712B5m9qkdz54OP9gVldUg+URnBTpv/j/bi/skmGdstXQ==
@@ -734,6 +734,11 @@
     "@react-spring/core" "~9.6.1"
     "@react-spring/shared" "~9.6.1"
     "@react-spring/types" "~9.6.1"
+
+"@remix-run/router@1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.7.1.tgz#fea7ac35ae4014637c130011f59428f618730498"
+  integrity sha512-bgVQM4ZJ2u2CM8k1ey70o1ePFXsEzYVZoWghh6WjM8p59jQ7HxzbHW4SbnWFG7V9ig9chLawQxDTZ3xzOF8MkQ==
 
 "@rushstack/eslint-patch@^1.1.3":
   version "1.3.2"
@@ -1839,12 +1844,12 @@ antd-mobile-v5-count@^1.0.1:
   resolved "https://registry.yarnpkg.com/antd-mobile-v5-count/-/antd-mobile-v5-count-1.0.1.tgz#85f20c46d1635c24e856bcf5ad55e8c98e44a523"
   integrity sha512-YGsiEDCPUDz3SzfXi6gLZn/HpeSMW+jgPc4qiYUr1fSopg3hkUie2TnooJdExgfiETHefH3Ggs58He0OVfegLA==
 
-antd-mobile@^5.31.1:
-  version "5.31.1"
-  resolved "https://registry.yarnpkg.com/antd-mobile/-/antd-mobile-5.31.1.tgz#634f3fefe641527bcc39c51509e39cce82eacd45"
-  integrity sha512-yibX+7I5iX6rFUefboGlNzyRGHPouSjbxbyvli/TNZxfSx5PS0aLBASEhyUJpU4rElNMfBuC3GN9tJiLoKnqGQ==
+antd-mobile@^5.32.0:
+  version "5.32.0"
+  resolved "https://registry.yarnpkg.com/antd-mobile/-/antd-mobile-5.32.0.tgz#4afff3f6cd84f76795fd83658b1eb184e9cd63c1"
+  integrity sha512-Wl24NW8rlsEv19n8NV/tD0/86tIYbdSU3agKeZFSzqwxp/E5x5WstHtQmQbLX2cSog9cojP5/wcqd2s2LGcXtg==
   dependencies:
-    "@floating-ui/dom" "^1.2.6"
+    "@floating-ui/dom" "^1.4.2"
     "@rc-component/mini-decimal" "^1.1.0"
     "@react-spring/web" "~9.6.1"
     "@use-gesture/react" "10.2.20"
@@ -4781,6 +4786,21 @@ react-remove-scroll@2.5.4:
     tslib "^2.1.0"
     use-callback-ref "^1.3.0"
     use-sidecar "^1.1.2"
+
+react-router-dom@^6.14.1:
+  version "6.14.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.14.1.tgz#0ad7ba7abdf75baa61169d49f096f0494907a36f"
+  integrity sha512-ssF6M5UkQjHK70fgukCJyjlda0Dgono2QGwqGvuk7D+EDGHdacEN3Yke2LTMjkrpHuFwBfDFsEjGVXBDmL+bWw==
+  dependencies:
+    "@remix-run/router" "1.7.1"
+    react-router "6.14.1"
+
+react-router@6.14.1:
+  version "6.14.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.14.1.tgz#5e82bcdabf21add859dc04b1859f91066b3a5810"
+  integrity sha512-U4PfgvG55LdvbQjg5Y9QRWyVxIdO1LlpYT7x+tMAxd9/vmiPuJhIwdxZuIQLN/9e3O4KFDHYfR9gzGeYMasW8g==
+  dependencies:
+    "@remix-run/router" "1.7.1"
 
 react-style-singleton@^2.2.1:
   version "2.2.1"

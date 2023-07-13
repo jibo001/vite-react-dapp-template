@@ -1,62 +1,56 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback } from "react"
 import { hashMessage } from "viem"
-import { useAccount, useConnect, useSignMessage } from "wagmi"
+import { useAccount, useWalletClient } from "wagmi"
 import useCatchTxError from "./useCatchTxError"
-
+import { useLocalStorageState } from "ahooks";
+import { Sign } from "@/types/account";
+import useConnectWallet from "./useConnectWallet";
 
 export default function useSign() {
-  const [sign, setSign] = useState({
+  const defaultSign: Sign = {
     address: '',
     message: '',
     signature: ''
-  })
-  const { address, isConnected } = useAccount()
-  const { connect } = useConnect()
-  const { handleError } = useCatchTxError()
+  }
   const rawMessage = Math.random().toString(36).slice(-8)
-  const { isLoading, signMessageAsync } = useSignMessage({
-    message: rawMessage,
-    onSuccess: (result) => {
+
+  const { connectWallet } = useConnectWallet()
+  const [sign, setSign] = useLocalStorageState<Sign | undefined>(
+    'sign',
+    {
+      defaultValue: defaultSign,
+    },
+  );
+  const { data: walletClient } = useWalletClient()
+  const { address, isConnected } = useAccount()
+  const { handleError } = useCatchTxError()
+
+  const removeSign = useCallback(() => {
+    setSign(defaultSign)
+  }, [])
+
+  const signAsync = useCallback(async () => {
+    try {
+      if (!isConnected) return await connectWallet()
+      const signature = await walletClient.signMessage({
+        account: address,
+        message: rawMessage
+      })
       const message = hashMessage(rawMessage)
-      const signature = result
-      localStorage.setItem('address', address)
-      localStorage.setItem('message', message)
-      localStorage.setItem('signature', signature)
       setSign({
         address,
         message,
         signature
       })
-    }
-  })
-
-  useEffect(() => {
-    setSign({
-      address: localStorage.getItem('address') || '',
-      message: localStorage.getItem('message') || '',
-      signature: localStorage.getItem('signature') || ''
-    })
-  }, [])
-  const removeSign = () => {
-    localStorage.removeItem('address')
-    localStorage.removeItem('message')
-    localStorage.removeItem('signature')
-  }
-
-  const signAsync = useCallback(async () => {
-    try {
-      if (!isConnected) connect()
-      await signMessageAsync()
     } catch (error) {
       handleError(error)
       return false
     }
     return true
-  }, [connect, handleError, isConnected, signMessageAsync])
+  }, [handleError, isConnected])
 
 
   return {
-    signLoading: isLoading,
     sign,
     signAsync,
     removeSign

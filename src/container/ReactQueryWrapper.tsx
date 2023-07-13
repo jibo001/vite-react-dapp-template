@@ -11,6 +11,8 @@ const ReactQueryWrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
         enabled: !address || !sign.signature,
       },
     },
