@@ -1,7 +1,9 @@
 import { Toast } from "antd-mobile"
-import { useCallback, useEffect, useState } from "react"
-import { BaseError, Hash, UnknownRpcError } from "viem"
+import { useCallback, useState } from "react"
+import { Address, BaseError, Hash, UnknownRpcError } from "viem"
 import { SendTransactionResult, WaitForTransactionResult, waitForTransaction } from "wagmi/actions"
+import useToast from "./useToast"
+import { useTranslation } from "react-i18next"
 
 /**
  * @description 捕获交易错误 可拿到hash
@@ -28,14 +30,28 @@ export function parseError<TError>(err: TError): BaseError | null {
   return null
 }
 export default function useCatchTxError(): CatchTxErrorReturn {
+  const { toastSuccess, toastError } = useToast()
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [txResponseLoading, setTxResponseLoading] = useState(false)
 
+
+  const parseError = (error: any) => {
+    return JSON.parse(JSON.stringify(error))
+  }
+
   const handleError = (error: any) => {
     if (!localStorage.getItem('wagmi.connected')) return Toast.show('Please connect wallet first')
-    error = JSON.parse(JSON.stringify(error))
+    error = parseError(error)
     Toast.show(error.cause.reason || error.shortMessage)
   }
+
+  const handleTxError = useCallback((error: any, hash: Address) => {
+    const err = parseError(error)
+    toastError(`${t('Failed')}${err.cause.reason || err.shortMessage}`, hash)
+  }, [])
+
+
 
 
   const fetchTxResponse = useCallback(
@@ -47,6 +63,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         tx = await callTx()
         const hash = typeof tx === 'string' ? tx : tx.hash
         Toast.show('Transaction Submitted')
+        toastSuccess
         return { hash }
       } catch (error: any) {
         handleError(error)
@@ -77,9 +94,15 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         const receipt = await waitForTransaction({
           hash,
         })
+        toastSuccess(t('Transaction Success'), hash)
         return receipt
       } catch (error: any) {
-        handleError(error)
+        if (!tx) {
+          handleError(error)
+        } else {
+          handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
+        }
+
       } finally {
         setLoading(false)
       }

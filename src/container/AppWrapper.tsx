@@ -1,12 +1,13 @@
-import { ReactNode, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAccount, useSwitchNetwork, useWalletClient } from 'wagmi'
 import { env } from '@/config/env'
 import { useActiveChain } from '@/hooks/useActiveChain'
 import { CustomConnectButton } from '@/components/CustomConnectButton/CustomConnectButton'
 import { useLocal } from '@/hooks/useLocal'
 import useSign from '@/hooks/useSign'
+import { ToastContainer } from 'react-toastify'
 
-export const AppWrapper = ({ children }: { children: ReactNode }) => {
+export const AppWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { switchNetwork } = useSwitchNetwork({
     onSuccess: () => {},
   })
@@ -31,6 +32,7 @@ export const AppWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <CustomConnectButton />
+      <ToastContainer />
       {children}
     </div>
   )

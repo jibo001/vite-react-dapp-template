@@ -4,9 +4,11 @@ import { useAccount, useWalletClient } from "wagmi"
 import useCatchTxError from "./useCatchTxError"
 import { useLocalStorageState } from "ahooks";
 import { Sign } from "@/types/account";
-import useConnectWallet from "./useConnectWallet";
-
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import useToast from "./useToast";
 export default function useSign() {
+  const { toastSuccess } = useToast()
+  const { openConnectModal } = useConnectModal();
   const defaultSign: Sign = {
     address: '',
     message: '',
@@ -14,7 +16,6 @@ export default function useSign() {
   }
   const rawMessage = Math.random().toString(36).slice(-8)
 
-  const { connectWallet } = useConnectWallet()
   const [sign, setSign] = useLocalStorageState<Sign | undefined>(
     'sign',
     {
@@ -31,7 +32,7 @@ export default function useSign() {
 
   const signAsync = useCallback(async () => {
     try {
-      if (!isConnected) return await connectWallet()
+      if (!isConnected) return await openConnectModal()
       const signature = await walletClient.signMessage({
         account: address,
         message: rawMessage
