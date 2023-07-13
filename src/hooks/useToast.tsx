@@ -1,5 +1,5 @@
 import DescriptionWithTx from '@/components/Toast/DescriptionWithTx'
-import { useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { ToastOptions, toast } from 'react-toastify'
 import { Address } from 'viem'
 
@@ -15,12 +15,12 @@ export default function useToast() {
     }),
     [],
   )
-  const toastSuccess = (description: string, txHash: Address) =>
-    toast(<DescriptionWithTx description={description} txHash={txHash}></DescriptionWithTx>, {
+  const toastSuccess = (txHash: Address, children: string | ReactNode) =>
+    toast(<DescriptionWithTx txHash={txHash}>{children}</DescriptionWithTx>, {
       ...toastConfig,
     })
-  const toastError = (description: string, txHash: Address) =>
-    toast(<DescriptionWithTx description={description} txHash={txHash}></DescriptionWithTx>, {
+  const toastError = (txHash: Address, children: string | ReactNode) =>
+    toast(<DescriptionWithTx txHash={txHash}>{children}</DescriptionWithTx>, {
       ...toastConfig,
       type: 'error',
     })

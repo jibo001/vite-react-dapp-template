@@ -48,7 +48,9 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
   const handleTxError = useCallback((error: any, hash: Address) => {
     const err = parseError(error)
-    toastError(`${t('Failed')}${err.cause.reason || err.shortMessage}`, hash)
+    console.log(error);
+
+    toastError(hash, `${t('Failed')} : ${err.cause.reason || err.shortMessage}`)
   }, [])
 
 
@@ -88,13 +90,12 @@ export default function useCatchTxError(): CatchTxErrorReturn {
          * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
          */
         tx = await callTx()
-
         const hash = typeof tx === 'string' ? tx : tx.hash
         // Toast.show('Transaction Submitted')
         const receipt = await waitForTransaction({
           hash,
         })
-        toastSuccess(t('Transaction Success'), hash)
+        toastSuccess(hash, t('Transaction Success'))
         return receipt
       } catch (error: any) {
         if (!tx) {

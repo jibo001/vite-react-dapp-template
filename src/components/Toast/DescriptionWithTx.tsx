@@ -3,9 +3,9 @@ import { formatAddress, getBlockExploreLink, getBlockExploreName } from '@/utils
 import { useTranslation } from 'react-i18next'
 
 interface DescriptionWithTxProps {
-  description?: string
   txHash?: string
   txChainId?: number
+  children?: React.ReactNode
 }
 
 const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps>> = ({
