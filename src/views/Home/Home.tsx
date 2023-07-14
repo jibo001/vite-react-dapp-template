@@ -28,7 +28,7 @@ const Home = memo(() => {
   const queryUserInfo = useQueryUserInfo()
 
   const PoolInfo = () => {
-    const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()
+    const { fetchWithCatchTxError } = useCatchTxError()
     const { callWithGasPrice } = useCallWithGasPrice()
     const { signAsync } = useSign()
     const activeChain = useActiveChain()
@@ -67,7 +67,7 @@ const Home = memo(() => {
           <div>当前chainId:{activeChain}</div>
           <div>address:{ido.data}</div>
           <div>Level:{queryUserInfo.isLoading ? 'loading' : queryUserInfo.data.data?.isActivate || -1}</div>
-          <Button color="primary" fill="solid" loading={isApproving} onClick={handleApprove}>
+          <Button color="primary" fill="solid" onClick={handleApprove}>
             授权
             {t('hello')}
           </Button>

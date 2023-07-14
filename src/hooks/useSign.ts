@@ -5,9 +5,7 @@ import useCatchTxError from "./useCatchTxError"
 import { useLocalStorageState } from "ahooks";
 import { Sign } from "@/types/account";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import useToast from "./useToast";
 export default function useSign() {
-  const { toastSuccess } = useToast()
   const { openConnectModal } = useConnectModal();
   const defaultSign: Sign = {
     address: '',

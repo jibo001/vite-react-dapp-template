@@ -4,6 +4,7 @@ import { Address, BaseError, Hash, UnknownRpcError } from "viem"
 import { SendTransactionResult, WaitForTransactionResult, waitForTransaction } from "wagmi/actions"
 import useToast from "./useToast"
 import { useTranslation } from "react-i18next"
+import { useConnectModal } from "@rainbow-me/rainbowkit"
 
 /**
  * @description 捕获交易错误 可拿到hash
@@ -34,15 +35,17 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [txResponseLoading, setTxResponseLoading] = useState(false)
-
+  const { openConnectModal } = useConnectModal();
 
   const parseError = (error: any) => {
     return JSON.parse(JSON.stringify(error))
   }
 
   const handleError = (error: any) => {
-
-    if (!localStorage.getItem('wagmi.connected')) return Toast.show('Please connect wallet first')
+    if (!localStorage.getItem('wagmi.connected')) {
+      toastError('', t('Please connect wallet'))
+      return openConnectModal()
+    }
     try {
       error = parseError(error)
     } finally {
@@ -68,8 +71,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         setTxResponseLoading(true)
         tx = await callTx()
         const hash = typeof tx === 'string' ? tx : tx.hash
-        Toast.show('Transaction Submitted')
-        toastSuccess
+        toastSuccess(hash, t('Transaction Submit'))
         return { hash }
       } catch (error: any) {
         handleError(error)
@@ -107,7 +109,6 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         } else {
           handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
         }
-
       } finally {
         setLoading(false)
       }

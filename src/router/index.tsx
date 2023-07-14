@@ -1,26 +1,24 @@
-import Hello from '@/views/Hello/Hello'
-import Home from '@/views/Home/Home'
-import { Navigate, useRoutes } from 'react-router-dom'
+import { useLazy } from '@/hooks/useLazy'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 
-const Routes = () =>
-  useRoutes([
-    {
-      path: '/',
-      //重定向
-      element: <Navigate to="/home" />,
-    },
-    {
-      path: '/home',
-      element: <Home />,
-    },
-    {
-      path: '/hello',
-      element: <Hello />,
-    },
-    {
-      path: '/*',
-      element: <div>Not Found</div>,
-    },
-  ])
+const router = createBrowserRouter([
+  {
+    path: '/',
+    //重定向
+    element: <Navigate to="/home" />,
+  },
+  {
+    path: '/home',
+    element: useLazy(() => import('@/views/home/Home')),
+  },
+  {
+    path: '/hello',
+    element: useLazy(() => import('@/views/hello/Hello')),
+  },
+  {
+    path: '/*',
+    element: <div>Not Found</div>,
+  },
+])
 
-export default Routes
+export default router
