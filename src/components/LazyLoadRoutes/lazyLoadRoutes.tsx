@@ -11,7 +11,7 @@ export type defRC = {
  * @param callback 返回 Promise 的函数
  * @returns JSX
  */
-export function useLazy(callback: () => Promise<defRC>) {
+export default function lazyLoadRoutes(callback: () => Promise<defRC>) {
   const LazyComp = React.lazy(callback)
   return (
     <React.Suspense fallback={<Skeleton />}>
