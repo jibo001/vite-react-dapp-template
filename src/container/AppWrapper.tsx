@@ -11,7 +11,7 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = () => {
   const matches = useMatches()
 
   useEffect(() => {
-    console.log('matches', matches[1]) // vue router meta
+    console.info('matches', matches[1]) // vue router meta
   }, [matches])
 
   return (
