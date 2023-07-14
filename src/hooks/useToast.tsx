@@ -1,6 +1,6 @@
-import DescriptionWithTx from '@/components/Toast/DescriptionWithTx'
-import { ReactNode, useMemo } from 'react'
-import { ToastOptions, toast } from 'react-toastify'
+import { ReactNode, useMemo } from 'react';
+import { ToastOptions, toast } from 'react-toastify';
+import DescriptionWithTx from '@/components/Toast/DescriptionWithTx';
 
 export default function useToast() {
   const toastConfig = useMemo<ToastOptions>(
@@ -13,18 +13,16 @@ export default function useToast() {
       pauseOnHover: true,
     }),
     [],
-  )
-  const toastSuccess = (txHash: string, children: string | ReactNode) =>
-    toast(<DescriptionWithTx txHash={txHash}>{children}</DescriptionWithTx>, {
-      ...toastConfig,
-    })
-  const toastError = (txHash: string, children: string | ReactNode) =>
-    toast(<DescriptionWithTx txHash={txHash}>{children}</DescriptionWithTx>, {
-      ...toastConfig,
-      type: 'error',
-    })
+  );
+  const toastSuccess = (txHash: string, children: string | ReactNode) => toast(<DescriptionWithTx txHash={txHash}>{children}</DescriptionWithTx>, {
+    ...toastConfig,
+  });
+  const toastError = (txHash: string, children: string | ReactNode) => toast(<DescriptionWithTx txHash={txHash}>{children}</DescriptionWithTx>, {
+    ...toastConfig,
+    type: 'error',
+  });
   return {
     toastSuccess,
     toastError,
-  }
+  };
 }

@@ -1,19 +1,19 @@
-import { useLazy } from '@/hooks/useLazy'
 import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { lazyLoadRoutes } from '@/components/LazyLoadRoutes/lazyLoadRoutes'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    //重定向
+    // 重定向
     element: <Navigate to="/home" />,
   },
   {
     path: '/home',
-    element: useLazy(() => import('@/views/home/Home')),
+    element: lazyLoadRoutes(() => import('@/views/home/Home')),
   },
   {
     path: '/hello',
-    element: useLazy(() => import('@/views/hello/Hello')),
+    element: lazyLoadRoutes(() => import('@/views/hello/Hello')),
   },
   {
     path: '/*',

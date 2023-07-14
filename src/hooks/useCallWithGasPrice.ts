@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback } from 'react';
 import {
   Abi,
   Account,
@@ -9,12 +9,12 @@ import {
   GetFunctionArgs,
   InferFunctionName,
   WriteContractParameters,
-} from 'viem'
-import { useWalletClient } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
-import { calculateGasMargin } from '@/utils'
-import { publicClient } from '@/config/wagmi'
-import { env } from '@/config/env'
+} from 'viem';
+import { useWalletClient } from 'wagmi';
+import { SendTransactionResult } from 'wagmi/actions';
+import { calculateGasMargin } from '@/utils';
+import { publicClient } from '@/config/wagmi';
+import { env } from '@/config/env';
 
 /**
 * @description callWithGasPrice 预估gas并发送交易 返回交易hash
@@ -22,8 +22,8 @@ import { env } from '@/config/env'
 * @param chainId 链id
 * @return hash
 */
-export function useCallWithGasPrice(gasMargin = 1000n, chainId = env.chainId) {
-  const { data: walletClient } = useWalletClient()
+export default function useCallWithGasPrice(gasMargin = 1000n, chainId = env.chainId) {
+  const { data: walletClient } = useWalletClient();
 
   const callWithGasPriceWithSimulate = useCallback(
     async <
@@ -45,30 +45,30 @@ export function useCallWithGasPrice(gasMargin = 1000n, chainId = env.chainId) {
         abi: contract.abi,
         address: contract.address,
         account: walletClient!.account,
-        functionName: functionName,
+        functionName,
         args: methodArgs,
         value: 0n,
         ...overrides,
-      } as unknown as EstimateContractGasParameters)
+      } as unknown as EstimateContractGasParameters);
       const res = await walletClient!.writeContract({
         abi: contract.abi,
         address: contract.address,
         account: walletClient!.account,
-        functionName: functionName,
+        functionName,
         args: methodArgs,
         gas: calculateGasMargin(gas, gasMargin),
         value: 0n,
         ...overrides,
-      } as unknown as WriteContractParameters)
+      } as unknown as WriteContractParameters);
 
-      const hash = res
+      const hash = res;
 
       return {
         hash,
-      }
+      };
     },
     [chainId, gasMargin, walletClient],
-  )
+  );
 
-  return { callWithGasPrice: callWithGasPriceWithSimulate }
+  return { callWithGasPrice: callWithGasPriceWithSimulate };
 }

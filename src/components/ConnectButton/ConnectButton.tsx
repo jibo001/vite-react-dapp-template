@@ -2,7 +2,7 @@ import { Button } from 'antd-mobile'
 import { useEffect, useState } from 'react'
 import { Connector, useConnect } from 'wagmi'
 
-export function ConnectButton() {
+export default function ConnectButton() {
   const [myConnectots, setMyConnectors] = useState<Connector<any, any>[]>([])
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
   useEffect(() => {

@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js'
-import { env } from '@/config/env'
-import { getErc20Contract } from '@/utils/contractHelpers'
-import { Address, useAccount, useContractRead } from 'wagmi'
+import BigNumber from 'bignumber.js';
+import { Address, useAccount, useContractRead } from 'wagmi';
+import { env } from '@/config/env';
+import { getErc20Contract } from '@/utils/contractHelpers';
 
 /**
  * @params token erc20 token address
@@ -11,8 +11,8 @@ import { Address, useAccount, useContractRead } from 'wagmi'
  * @return setLastUpdated 更新授权额度
  */
 export const useTokenApprovalStatus = (token: Address, spender: Address) => {
-  const { address: account } = useAccount()
-  const chainId = env.chainId
+  const { address: account } = useAccount();
+  const { chainId } = env;
 
   const { data, refetch } = useContractRead({
     chainId,
@@ -21,13 +21,13 @@ export const useTokenApprovalStatus = (token: Address, spender: Address) => {
     functionName: 'allowance',
     args: [account!, spender],
     watch: true,
-  })
+  });
 
   return {
     isVaultApproved: data! > 0,
-    allowance: new BigNumber(data!?.toString()),
+    allowance: new BigNumber(data?.toString()),
     setLastUpdated: refetch,
-  }
-}
+  };
+};
 
-export default useTokenApprovalStatus
+export default useTokenApprovalStatus;

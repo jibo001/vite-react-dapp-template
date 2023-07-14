@@ -1,18 +1,18 @@
 import { useContractRead, useWalletClient } from 'wagmi'
 import { useTranslation } from 'react-i18next'
-import { getErc20Contract, getIdoStakeContract } from '@/utils/contractHelpers'
-import { useQueryUserInfo } from '@/hooks/service/useUserService'
-import { useCallWithGasPrice } from '@/hooks/useCallWithGasPrice'
-import useSign from '@/hooks/useSign'
-import { useActiveChain } from '@/hooks/useActiveChain'
-import useCatchTxError from '@/hooks/useCatchTxError'
-import { MaxUint256, parseUnits } from 'ethers'
-import { Button } from 'antd-mobile'
-import { env } from '@/config/env'
-import { useLocal } from '@/hooks/useLocal'
-import i18n from '@/locales/config'
 import { memo } from 'react'
+import { MaxUint256 } from 'ethers'
 import { Link } from 'react-router-dom'
+import { Button } from 'antd-mobile'
+import { useQueryUserInfo } from '@/hooks/service/useUserService'
+import { getErc20Contract, getIdoStakeContract } from '@/utils/contractHelpers'
+import useCallWithGasPrice from '@/hooks/useCallWithGasPrice'
+import useSign from '@/hooks/useSign'
+import useActiveChain from '@/hooks/useActiveChain'
+import useCatchTxError from '@/hooks/useCatchTxError'
+import { env } from '@/config/env'
+import useLocal from '@/hooks/useLocal'
+import i18n from '@/locales/config'
 import { toWei } from '@/utils/formatBalance'
 
 const Home = memo(() => {
@@ -35,15 +35,13 @@ const Home = memo(() => {
     const sbtcContract = getErc20Contract(ido.data!, walletClient!)
 
     const handleApprove = async () => {
-      await fetchWithCatchTxError(() => {
-        return callWithGasPrice(sbtcContract!, 'approve', [idoStakeContract.address, MaxUint256])
-      })
+      await fetchWithCatchTxError(() =>
+        callWithGasPrice(sbtcContract!, 'approve', [idoStakeContract.address, MaxUint256]),
+      )
     }
 
     const handleDeposit = async () => {
-      await fetchWithCatchTxError(() => {
-        return callWithGasPrice(idoStakeContract!, 'deposit', [1, toWei('2', 18), false])
-      })
+      await fetchWithCatchTxError(() => callWithGasPrice(idoStakeContract!, 'deposit', [1, toWei('2', 18), false]))
     }
 
     const toggleI18n = () => {
@@ -56,17 +54,30 @@ const Home = memo(() => {
 
     if (ido.isFetching) {
       return <div>Loading...</div>
-    } else if (ido.isSuccess) {
+    }
+    if (ido.isSuccess) {
       return (
         <div>
           <Button className="lang custom-btn" id="hover-btn-line" onClick={() => toggleI18n()}>
             {i18n.language === 'zh-CN' ? 'CN' : 'EN'}
           </Button>
 
-          <div>项目chainId:{env.chainId}</div>
-          <div>当前chainId:{activeChain}</div>
-          <div>address:{ido.data}</div>
-          <div>Level:{queryUserInfo.isLoading ? 'loading' : queryUserInfo.data.data?.isActivate || -1}</div>
+          <div>
+            项目chainId:
+            {env.chainId}
+          </div>
+          <div>
+            当前chainId:
+            {activeChain}
+          </div>
+          <div>
+            address:
+            {ido.data}
+          </div>
+          <div>
+            Level:
+            {queryUserInfo.isLoading ? 'loading' : queryUserInfo.data.data?.isActivate || -1}
+          </div>
           <Button color="primary" fill="solid" onClick={handleApprove}>
             授权
             {t('hello')}
@@ -76,6 +87,10 @@ const Home = memo(() => {
         </div>
       )
     }
+    if (ido.isError) {
+      return <div>Error</div>
+    }
+    return null
   }
 
   return (

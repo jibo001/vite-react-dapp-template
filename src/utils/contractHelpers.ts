@@ -1,12 +1,12 @@
 import {
-  getIdoStakeAddress
-} from '@/utils/addressHelpers'
+  Abi, Address, PublicClient, WalletClient, getContract as viemGetContract,
+} from 'viem';
+import { erc20ABI, erc721ABI } from 'wagmi';
+import { getIdoStakeAddress } from '@/utils/addressHelpers';
 
 // ABI
 // import idoStakeABI from '@/config/abi/idoStakeAbi.json'
-import idoStake from '@/config/abi/idoStake'
-import { Abi, Address, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
-import { erc20ABI, erc721ABI } from 'wagmi'
+import idoStake from '@/config/abi/idoStake';
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -23,28 +23,22 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   const c = viemGetContract({
     abi,
     address,
-    publicClient: publicClient,
+    publicClient,
     walletClient: signer,
-  })
+  });
   return {
     ...c,
     account: signer?.account,
     chain: signer?.chain,
-  }
-}
+  };
+};
 
-export const getErc20Contract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: erc20ABI, address, signer })
-}
+export const getErc20Contract = (address: Address, signer?: WalletClient) => getContract({ abi: erc20ABI, address, signer });
 
-export const getErc721Contract = (address: Address, walletClient?: WalletClient) => {
-  return getContract({
-    abi: erc721ABI,
-    address,
-    signer: walletClient,
-  })
-}
+export const getErc721Contract = (address: Address, walletClient?: WalletClient) => getContract({
+  abi: erc721ABI,
+  address,
+  signer: walletClient,
+});
 
-export const getIdoStakeContract = (signer?: WalletClient) => {
-  return getContract({ abi: idoStake, address: getIdoStakeAddress(), signer })
-}
+export const getIdoStakeContract = (signer?: WalletClient) => getContract({ abi: idoStake, address: getIdoStakeAddress(), signer });

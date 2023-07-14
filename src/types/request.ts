@@ -6,7 +6,6 @@ export interface ApiResponse<T> {
   total?: number
 }
 
-
 export interface Page {
   page: number,
   size: number

@@ -1,7 +1,5 @@
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js';
 
-import { BIG_TEN } from './bigNumber'
+import { BIG_TEN } from './bigNumber';
 
-export const getFullDecimalMultiplier = (decimals: number): BigNumber => {
-  return BIG_TEN.pow(decimals)
-}
+export default function getFullDecimalMultiplier(decimals: number): BigNumber { return BIG_TEN.pow(decimals); }

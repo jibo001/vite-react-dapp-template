@@ -1,5 +1,5 @@
 // Set of helper functions to facilitate wallet setup
-import { Address } from 'wagmi'
+import { Address } from 'wagmi';
 
 /**
  * Prompt the user to add a custom token to metamask
@@ -26,16 +26,15 @@ export const registerToken = async (
         tokenLogo,
       },
     },
-  })
+  });
 
-  return tokenAdded
-}
+  return tokenAdded;
+};
 
-export const canRegisterToken = () =>
-  typeof window !== 'undefined' &&
+export const canRegisterToken = () => typeof window !== 'undefined'
   // @ts-ignore
-  !window?.ethereum?.isSafePal &&
-  (window?.ethereum?.isMetaMask ||
-    window?.ethereum?.isTrust ||
-    window?.ethereum?.isCoinbaseWallet ||
-    window?.ethereum?.isTokenPocket)
+  && !window?.ethereum?.isSafePal
+  && (window?.ethereum?.isMetaMask
+    || window?.ethereum?.isTrust
+    || window?.ethereum?.isCoinbaseWallet
+    || window?.ethereum?.isTokenPocket);
