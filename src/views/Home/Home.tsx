@@ -1,6 +1,5 @@
 import { useContractRead, useWalletClient } from 'wagmi'
 import { useTranslation } from 'react-i18next'
-import i18n from '@/locales/config'
 import { memo } from 'react'
 import { MaxUint256 } from 'ethers'
 import { Link } from 'react-router-dom'
@@ -14,6 +13,7 @@ import useCatchTxError from '@/hooks/useCatchTxError'
 import { env } from '@/config/env'
 import useLocal from '@/hooks/useLocal'
 import { toWei } from '@/utils/formatBalance'
+import i18n from '@/locales/config'
 
 const Home = memo(() => {
   const { data: walletClient } = useWalletClient()

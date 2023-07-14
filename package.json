@@ -12,9 +12,8 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "packages/**/*.{js,jsx,ts,tsx,json,css,scss,md,vue}": [
-      "eslint --fix",
-      "git add"
+    "*.{vue,js,ts,jsx,tsx}": [
+      "yarn lint"
     ]
   },
   "husky": {
