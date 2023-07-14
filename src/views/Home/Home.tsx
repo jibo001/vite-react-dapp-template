@@ -1,6 +1,6 @@
 import { useContractRead, useWalletClient } from 'wagmi'
-import i18n from '@/locales/config'
 import { useTranslation } from 'react-i18next'
+import i18n from '@/locales/config'
 import { memo } from 'react'
 import { MaxUint256 } from 'ethers'
 import { Link } from 'react-router-dom'
