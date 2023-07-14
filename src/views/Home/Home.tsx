@@ -61,14 +61,10 @@ const Home = memo(() => {
           <Button className="lang custom-btn" id="hover-btn-line" onClick={() => toggleI18n()}>
             {i18n.language === 'zh-CN' ? 'CN' : 'EN'}
           </Button>
-
+          <div>项目chainId:{env.chainId}</div>
           <div>
-            项目chainId:
-            {env.chainId}
-          </div>
-          <div>
-            当前chainId:
-            {activeChain}
+            当前chainId:{activeChain}
+            <span>123</span>
           </div>
           <div>
             address:
