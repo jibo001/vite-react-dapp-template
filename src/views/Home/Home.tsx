@@ -1,4 +1,5 @@
 import { useContractRead, useWalletClient } from 'wagmi'
+import i18n from '@/locales/config'
 import { useTranslation } from 'react-i18next'
 import { memo } from 'react'
 import { MaxUint256 } from 'ethers'
@@ -12,7 +13,6 @@ import useActiveChain from '@/hooks/useActiveChain'
 import useCatchTxError from '@/hooks/useCatchTxError'
 import { env } from '@/config/env'
 import useLocal from '@/hooks/useLocal'
-import i18n from '@/locales/config'
 import { toWei } from '@/utils/formatBalance'
 
 const Home = memo(() => {
