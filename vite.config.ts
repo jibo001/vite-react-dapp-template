@@ -10,7 +10,7 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  //启动服务配置
+  // 启动服务配置
   server: {
     host: '0.0.0.0',
     port: 8000,

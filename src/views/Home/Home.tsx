@@ -27,6 +27,8 @@ const Home = memo(() => {
 
   const queryUserInfo = useQueryUserInfo()
 
+  console.log('queryUserInfo', queryUserInfo)
+
   const PoolInfo = () => {
     const { fetchWithCatchTxError } = useCatchTxError()
     const { callWithGasPrice } = useCallWithGasPrice()
@@ -72,7 +74,7 @@ const Home = memo(() => {
           </div>
           <div>
             Level:
-            {queryUserInfo.isLoading ? 'loading' : queryUserInfo.data.data?.isActivate || -1}
+            {queryUserInfo.isLoading ? 'loading' : queryUserInfo.data?.data?.isActivate || -1}
           </div>
           <Button color="primary" fill="solid" onClick={handleApprove}>
             授权

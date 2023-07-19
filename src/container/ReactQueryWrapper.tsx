@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
+import { Toast } from 'antd-mobile'
 import useSign from '@/hooks/useSign'
 
 // Create a client
@@ -13,6 +14,9 @@ const ReactQueryWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
         refetchOnWindowFocus: false,
         retry: false,
         enabled: !address || !sign.signature,
+        onError: (error: any) => {
+          Toast.show(error.message)
+        },
       },
     },
   })

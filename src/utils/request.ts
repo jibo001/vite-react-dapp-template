@@ -34,7 +34,7 @@ const request = <T>(
     headers.authorized = localStorage.getItem('authorized') || '';
   }
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     axios({
       method,
       headers,
@@ -49,34 +49,25 @@ const request = <T>(
         if (res.data.code === 1) {
           // eslint-disable-next-line no-param-reassign
           res.data.success = true;
-          resolve(res.data);
+          resolve(res.data.data);
         } else {
-          resolve({
-            code: res.data.code,
-            success: false,
-            data: null,
-            msg: res.data.msg || 'Network exception',
-          });
+          // resolve({
+          //   code: res.data.code,
+          //   success: false,
+          //   data: null,
+          //   msg: res.data.msg || 'Network exception',
+          // });
+          reject(res.data.msg || 'Network exception')
         }
       }).catch((error) => {
-        Toast.clear();
-        let messageText = '';
-        if (
-          error.response
-          && error.response.data
-          && error.response.data.message
-        ) {
-          messageText = error.response.data.msg;
-        } else {
-          messageText = 'Network exception';
-        }
-        Toast.show(messageText);
-        resolve({
-          code: 500,
-          success: false,
-          data: null,
-          msg: 'Network exception',
-        });
+        reject(new Error(error?.response?.data?.msg || 'Network exception'))
+        // Toast.clear();
+        // resolve({
+        //   code: 500,
+        //   success: false,
+        //   data: null,
+        //   msg: error?.response?.data?.msg || 'Network exception',
+        // });
       });
   });
 };

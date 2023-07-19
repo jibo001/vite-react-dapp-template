@@ -1,4 +1,4 @@
-import { configureChains, createConfig } from 'wagmi';
+import { Chain, configureChains, createConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import {
   injectedWallet,
@@ -7,13 +7,19 @@ import {
   trustWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import chainMap from './constants/chainId';
 import { env } from '@/config/env';
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [chainMap[env.chainId]],
-  [publicProvider()],
+  [
+    publicProvider(),
+    jsonRpcProvider({
+      rpc: (chain: Chain) => ({ http: `https://${chain.network}.publicnode.com` })
+    })],
 );
+
 
 const connectors = connectorsForWallets([
   {
