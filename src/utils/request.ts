@@ -22,13 +22,8 @@ const request = <T>(
   headers.signature = sign?.signature || '';
   if (needToken) {
     if (!headers.signature) {
-      return new Promise((resolve) => {
-        resolve({
-          code: -1,
-          success: false,
-          data: null,
-          msg: 'Network exception',
-        });
+      return new Promise((_resolve, reject) => {
+        reject(new Error('Please login first'))
       });
     }
     headers.authorized = localStorage.getItem('authorized') || '';
