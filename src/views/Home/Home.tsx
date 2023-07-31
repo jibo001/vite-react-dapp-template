@@ -4,7 +4,7 @@ import { memo } from 'react'
 import { MaxUint256 } from 'ethers'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd-mobile'
-import { useQueryUserInfo } from '@/hooks/service/useUserService'
+import { useQuery } from '@tanstack/react-query'
 import { getErc20Contract, getIdoStakeContract } from '@/utils/contractHelpers'
 import useCallWithGasPrice from '@/hooks/useCallWithGasPrice'
 import useSign from '@/hooks/useSign'
@@ -14,6 +14,7 @@ import { env } from '@/config/env'
 import useLocal from '@/hooks/useLocal'
 import { toWei } from '@/utils/formatBalance'
 import i18n from '@/locales/config'
+import { queryUserInfo } from '@/services/user'
 
 const Home = memo(() => {
   const { data: walletClient } = useWalletClient()
@@ -25,9 +26,7 @@ const Home = memo(() => {
     functionName: 'BTD',
   })
 
-  const queryUserInfo = useQueryUserInfo()
-
-  console.log('queryUserInfo', queryUserInfo)
+  const userInfo = useQuery(['userInfo'], queryUserInfo)
 
   const PoolInfo = () => {
     const { fetchWithCatchTxError } = useCatchTxError()
@@ -51,7 +50,7 @@ const Home = memo(() => {
     }
     const handleSign = async () => {
       const isSuccess = await signAsync()
-      if (isSuccess) await queryUserInfo.refetch()
+      if (isSuccess) await userInfo.refetch()
     }
 
     if (ido.isFetching) {
@@ -74,7 +73,7 @@ const Home = memo(() => {
           </div>
           <div>
             Level:
-            {queryUserInfo.isLoading ? 'loading' : queryUserInfo.data?.data?.isActivate || -1}
+            {userInfo.isLoading ? 'loading' : userInfo.data?.isActivate || -1}
           </div>
           <Button color="primary" fill="solid" onClick={handleApprove}>
             授权

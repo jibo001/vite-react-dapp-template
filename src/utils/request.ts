@@ -9,7 +9,7 @@ axios.defaults.timeout = 50000;
 const request = <T>(
   method: string,
   url: string,
-  params: any,
+  params: any | null,
   needToken: boolean = true,
   headerContentType: string = 'application/json',
   baseURL: string = env.baseUrl,
@@ -35,7 +35,7 @@ const request = <T>(
       headers,
       baseURL,
       url,
-      timeout: 15000,
+      timeout: 60 * 10000,
       params: method === 'GET' || method === 'DELETE' ? params : null, // 是即将与请求一起发送的 URL 参数
       data: method === 'POST' || method === 'PUT' ? params : null, // 是作为请求主体被发送的数据
     })
@@ -44,7 +44,7 @@ const request = <T>(
         if (res.data.code === 1) {
           // eslint-disable-next-line no-param-reassign
           res.data.success = true;
-          resolve(res.data.data);
+          resolve(res.data);
         } else {
           // resolve({
           //   code: res.data.code,
@@ -52,7 +52,7 @@ const request = <T>(
           //   data: null,
           //   msg: res.data.msg || 'Network exception',
           // });
-          reject(res.data.msg || 'Network exception')
+          throw new Error(res.data.msg || 'Network exception')
         }
       }).catch((error) => {
         reject(new Error(error?.response?.data?.msg || 'Network exception'))
