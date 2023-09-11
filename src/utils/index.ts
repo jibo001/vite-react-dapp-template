@@ -1,4 +1,5 @@
 import { bsc } from 'viem/chains';
+import { Toast } from 'antd-mobile';
 import { env } from '@/config/env';
 import { chains } from '@/config/wagmi';
 
@@ -56,3 +57,17 @@ export const formatAddress = (value: string, flag = '...', num = 4, laseNmu = 4)
   const address = startAddress + flag + endAddress;
   return address;
 };
+
+
+export const copy = (value: string) => {
+  const text = document.createElement('textarea')
+  text.value = value
+  document.body.appendChild(text)
+  text.select() // 选择对象
+  if (document.execCommand('copy')) {
+    document.execCommand('copy')
+    Toast.show('success')
+  }
+  // 执行浏览器复制命令
+  document.body.removeChild(text)
+}

@@ -19,13 +19,20 @@ export const getBalanceNumber = (balance: BigNumber, decimals = 18) => getBalanc
  * It uses undefined locale which uses host language as a result.
  * Languages have different decimal separators which results in inconsistency when converting back this result to number.
  */
-export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
+export const formatNumber = (number: number | string, minPrecision = 0, maxPrecision = 4) => {
+  if (!number) return '0'
+  let n = number
+  if (typeof n === 'string') n = parseFloat(n)
   const options = {
     minimumFractionDigits: minPrecision,
     maximumFractionDigits: maxPrecision,
   };
-  return number.toLocaleString(undefined, options);
+  return n.toLocaleString(undefined, options);
 };
+
+export const formatNumberFromBigInt = (number: bigint, minPrecision = 0, maxPrecision = 4) => {
+  return formatNumber(fromWei(number), minPrecision, maxPrecision);
+}
 
 export const formatBigInt = (value: bigint, displayDecimals = 18, decimals = 18): string => {
   const remainder = value % 10n ** BigInt(decimals - displayDecimals);

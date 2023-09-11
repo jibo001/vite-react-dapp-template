@@ -21,12 +21,12 @@ const request = <T>(
   headers.message = sign?.message || '';
   headers.signature = sign?.signature || '';
   if (needToken) {
-    if (!headers.signature) {
-      return new Promise((_resolve, reject) => {
-        reject(new Error('Please login first'))
-      });
-    }
-    headers.authorized = localStorage.getItem('authorized') || '';
+    // if (!headers.signature) {
+    //   return new Promise((_resolve, reject) => {
+    //     reject(new Error('Please login first'))
+    //   });
+    // }
+    // headers.authorized = localStorage.getItem('authorized') || '';
   }
 
   return new Promise((resolve, reject) => {

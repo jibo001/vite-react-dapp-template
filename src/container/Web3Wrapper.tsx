@@ -1,4 +1,4 @@
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
 import { useEffect } from 'react'
 import { WagmiConfig, useAccount, useSwitchNetwork, useWalletClient } from 'wagmi'
 import { env } from '@/config/env'
@@ -32,7 +32,7 @@ const Web3Handler: React.FC<React.PropsWithChildren> = ({ children }) => {
 const Web3Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} initialChain={env.chainId}>
+      <RainbowKitProvider chains={chains} initialChain={env.chainId} theme={darkTheme()}>
         <Web3Handler>{children}</Web3Handler>
       </RainbowKitProvider>
     </WagmiConfig>

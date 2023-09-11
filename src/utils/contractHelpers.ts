@@ -2,11 +2,12 @@ import {
   Abi, Address, PublicClient, WalletClient, getContract as viemGetContract,
 } from 'viem';
 import { erc20ABI, erc721ABI } from 'wagmi';
-import { getIdoStakeAddress } from '@/utils/addressHelpers';
 
 // ABI
 // import idoStakeABI from '@/config/abi/idoStakeAbi.json'
 import idoStake from '@/config/abi/idoStake';
+import { getIdoStakeAddress } from './addressHelpers';
+
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -42,3 +43,4 @@ export const getErc721Contract = (address: Address, walletClient?: WalletClient)
 });
 
 export const getIdoStakeContract = (signer?: WalletClient) => getContract({ abi: idoStake, address: getIdoStakeAddress(), signer });
+

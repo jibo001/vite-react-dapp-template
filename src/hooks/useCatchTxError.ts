@@ -4,7 +4,9 @@ import { Address, Hash } from 'viem';
 import { SendTransactionResult, WaitForTransactionResult, waitForTransaction } from 'wagmi/actions';
 import { useTranslation } from 'react-i18next';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useWalletClient } from 'wagmi';
 import useToast from './useToast';
+import { pareseJson, renderJson } from '@/utils/json';
 
 /**
  * @description 捕获交易错误 可拿到hash
@@ -17,17 +19,20 @@ export type CatchTxErrorReturn = {
   txResponseLoading: boolean
 };
 
+
+
+
 export default function useCatchTxError(): CatchTxErrorReturn {
   const { toastSuccess, toastError } = useToast();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [txResponseLoading, setTxResponseLoading] = useState(false);
   const { openConnectModal } = useConnectModal();
-
-  const parseError = (error: any) => JSON.parse(JSON.stringify(error));
+  const { data: walletClient } = useWalletClient();
+  const parseError = (error: any) => pareseJson(renderJson(error));
 
   const handleError = useCallback((error: any) => {
-    if (!localStorage.getItem('wagmi.connected')) {
+    if (!walletClient?.account) {
       toastError('', t('Please connect wallet'));
       openConnectModal();
     } else {
@@ -38,11 +43,12 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         Toast.show(err.cause.reason || err.shortMessage);
       }
     }
-  }, [openConnectModal, t, toastError]);
+  }, [openConnectModal, t, toastError, walletClient?.account]);
 
   const handleTxError = useCallback((error: any, hash: Address) => {
+    console.error(error);
     const err = parseError(error);
-    toastError(hash, `${t('Failed')} : ${err.cause.reason || err.shortMessage}`);
+    toastError(hash, `${t('Failed')} : ${err?.cause?.reason || err?.shortMessage || 'Some error happend'}`);
   }, [t, toastError]);
 
   const fetchTxResponse = useCallback(
@@ -66,19 +72,15 @@ export default function useCatchTxError(): CatchTxErrorReturn {
     [handleError, t, toastSuccess],
   );
 
+
+
   const fetchWithCatchTxError = useCallback(
     async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<WaitForTransactionResult | null> => {
       let tx: SendTransactionResult | Hash = null;
       try {
         setLoading(true);
-        /**
-         * https://github.com/vercel/swr/pull/1450
-         *
-         * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
-         */
         tx = await callTx();
         const hash = typeof tx === 'string' ? tx : tx.hash;
-        // Toast.show('Transaction Submitted')
         const receipt = await waitForTransaction({
           hash,
         });

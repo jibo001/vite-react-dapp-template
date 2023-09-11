@@ -23,6 +23,7 @@ export const useTokenApprovalStatus = (token: Address, spender: Address) => {
     watch: true,
   });
 
+
   return {
     isVaultApproved: data! > 0,
     allowance: new BigNumber(data?.toString()),

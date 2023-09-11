@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import lazyLoadRoutes from '@/components/LazyLoadRoutes/lazyLoadRoutes'
+import lazyLoadRoutes from '@/components/LazyLoadRoutes'
 import { AppWrapper } from '@/container/AppWrapper'
 
 const router = createBrowserRouter([
@@ -10,16 +10,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: lazyLoadRoutes(() => import('@/views/home/Home')),
+        element: lazyLoadRoutes(() => import('@/views/Home/Home')),
         // vue router meta
         handle: {
           name: 'home',
-          isHeaader: false,
         },
-      },
-      {
-        path: 'hello',
-        element: lazyLoadRoutes(() => import('@/views/hello/Hello')),
       },
       {
         path: '*',

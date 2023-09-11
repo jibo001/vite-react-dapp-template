@@ -24,12 +24,16 @@
     "strictNullChecks": false,
     "paths": {
       "@/*": [
-        "./src/*"
-      ]
+        "src/*"
+      ],
+      "@assets/*": [
+        "public/assets/*"
+      ],
     },
+    "baseUrl": "."
   },
   "include": [
-    "src"
+    "src",
   ],
   "references": [
     {
