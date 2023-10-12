@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fromHex } from 'viem';
 
 /**
@@ -6,16 +6,23 @@ import { fromHex } from 'viem';
  */
 const useActiveChain = () => {
   const [chainId, setChainId] = useState<number>();
-  useEffect(() => {
 
-    setChainId(fromHex(window.ethereum?.chainId ?? '0x0', 'number'));
+  const changeChain = useCallback(() => {
     if (window?.ethereum) {
       window.ethereum.on('chainChanged', (currentChainId: `0x${string}`) => {
         setChainId(fromHex(currentChainId, 'number'));
       });
     }
-  }, []);
-  return chainId;
+  }, [setChainId])
+
+  useEffect(() => {
+    setChainId(fromHex(window.ethereum?.chainId ?? '0x0', 'number'));
+    changeChain()
+  }, [changeChain]);
+  return {
+    chainId,
+    changeChain
+  };
 };
 
 export default useActiveChain

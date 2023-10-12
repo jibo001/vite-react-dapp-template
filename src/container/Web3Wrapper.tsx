@@ -12,7 +12,7 @@ const Web3Handler: React.FC<React.PropsWithChildren> = ({ children }) => {
   })
   const { data: walletClient } = useWalletClient()
   const { address } = useAccount()
-  const activeChainId = useActiveChain()
+  const { chainId: activeChainId } = useActiveChain()
   const { removeSign } = useSign()
   // 切换网络
   useEffect(() => {

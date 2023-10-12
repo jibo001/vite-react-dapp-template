@@ -1,10 +1,10 @@
 import { useContractRead, useWalletClient } from 'wagmi'
 import { useTranslation } from 'react-i18next'
 import { memo } from 'react'
-import { MaxUint256 } from 'ethers'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd-mobile'
 import { useQuery } from '@tanstack/react-query'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { getErc20Contract, getIdoStakeContract } from '@/utils/contractHelpers'
 import useCallWithGasPrice from '@/hooks/useCallWithGasPrice'
 import useSign from '@/hooks/useSign'
@@ -15,6 +15,7 @@ import useLocal from '@/hooks/useLocal'
 import { toWei } from '@/utils/formatBalance'
 import i18n from '@/locales/config'
 import { queryUserInfo } from '@/services/user'
+import useTokenApproval from '@/hooks/useTokenApproval'
 
 const Home = memo(() => {
   const { data: walletClient } = useWalletClient()
@@ -32,14 +33,9 @@ const Home = memo(() => {
     const { fetchWithCatchTxError } = useCatchTxError()
     const { callWithGasPrice } = useCallWithGasPrice()
     const { signAsync } = useSign()
-    const activeChain = useActiveChain()
+    const { chainId: activeChain } = useActiveChain()
     const sbtcContract = getErc20Contract(ido.data!, walletClient!)
-
-    const handleApprove = async () => {
-      await fetchWithCatchTxError(() =>
-        callWithGasPrice(sbtcContract!, 'approve', [idoStakeContract.address, MaxUint256]),
-      )
-    }
+    const { handleApprove, approveLoading } = useTokenApproval(sbtcContract.address, idoStakeContract.address)
 
     const handleDeposit = async () => {
       await fetchWithCatchTxError(() => callWithGasPrice(idoStakeContract!, 'deposit', [1, toWei('2', 18), false]))
@@ -75,7 +71,7 @@ const Home = memo(() => {
             Level:
             {userInfo.isLoading ? 'loading' : userInfo.data?.isActivate || -1}
           </div>
-          <Button color="primary" fill="solid" onClick={handleApprove}>
+          <Button color="primary" fill="solid" loading={approveLoading} onClick={() => handleApprove()}>
             授权
             {t('hello')}
           </Button>
@@ -94,6 +90,7 @@ const Home = memo(() => {
     <>
       <div>
         <div>
+          <ConnectButton />
           <Link to="/hello">
             <Button color="primary" fill="solid">
               hello

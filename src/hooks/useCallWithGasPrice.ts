@@ -40,7 +40,6 @@ export default function useCallWithGasPrice(gasMargin = 1000n, chainId = env.cha
       methodArgs?: Args extends never ? undefined : Args,
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
-
       const gas = await publicClient({ chainId }).estimateContractGas({
         abi: contract.abi,
         address: contract.address,
